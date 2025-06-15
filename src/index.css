@@ -1,4 +1,5 @@
 @import './styles/tailwind.css';
+
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
@@ -23,17 +24,27 @@ a:hover {
   color: #535bf2;
 }
 
+/* Make sure body uses full viewport height and width, flex column for stacking */
 body {
   margin: 0;
   display: flex;
-  place-items: center;
+  flex-direction: column;
   min-width: 320px;
   min-height: 100vh;
+  width: 100vw;
+  height: 100vh;
+  overflow-x: hidden; /* prevent horizontal scroll */
+  background-color: inherit;
+  color: inherit;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
+/* Responsive typography */
 h1 {
-  font-size: 3.2em;
+  font-size: clamp(2rem, 5vw, 3.2em);
   line-height: 1.1;
+  margin: 0;
 }
 
 button {
@@ -66,4 +77,26 @@ button:focus-visible {
   button {
     background-color: #f9f9f9;
   }
+}
+
+/* Make images and videos responsive by default */
+img, video {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Utility for container max width & padding */
+.container {
+  max-width: 1200px;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+}
+
+/* Add scroll padding for fixed headers if you have any */
+html {
+  scroll-padding-top: 60px;
 }

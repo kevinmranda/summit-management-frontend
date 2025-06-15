@@ -1,6 +1,12 @@
 import { createContext, useState, useEffect } from 'react';
 import type { ReactNode } from 'react';
-import { getToken, setToken, removeToken, isAuthenticated, isAdmin } from '../services/auth';
+import { jwtDecode } from 'jwt-decode';
+
+interface DecodedToken {
+  exp: number;
+  role: string;
+  user_id: number;
+}
 
 interface AuthContextType {
   isAuthenticated: boolean;
@@ -17,42 +23,47 @@ export const AuthContext = createContext<AuthContextType>({
 });
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [authState, setAuthState] = useState({
-    isAuthenticated: isAuthenticated(),
-    isAdmin: isAdmin(),
-  });
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
+
+  const decodeAndSetAuthState = (token: string) => {
+    try {
+      const decoded: DecodedToken = jwtDecode(token);
+      const isValid = decoded.exp * 1000 > Date.now();
+
+      if (isValid) {
+        setIsAuthenticated(true);
+        setIsAdmin(decoded.role === 'admin');
+      } else {
+        logout();
+      }
+    } catch (err) {
+      console.error('Invalid token:', err);
+      logout();
+    }
+  };
 
   useEffect(() => {
-    const token = getToken();
-    if (token) {
-      setAuthState({
-        isAuthenticated: isAuthenticated(),
-        isAdmin: isAdmin(),
-      });
-    }
+    const token = localStorage.getItem('token');
+    if (token) decodeAndSetAuthState(token);
   }, []);
 
   const login = (token: string) => {
-    setToken(token);
-    setAuthState({
-      isAuthenticated: true,
-      isAdmin: isAdmin(),
-    });
+    localStorage.setItem('token', token);
+    decodeAndSetAuthState(token);
   };
 
   const logout = () => {
-    removeToken();
-    setAuthState({
-      isAuthenticated: false,
-      isAdmin: false,
-    });
+    localStorage.removeItem('token');
+    setIsAuthenticated(false);
+    setIsAdmin(false);
   };
 
   return (
     <AuthContext.Provider
       value={{
-        isAuthenticated: authState.isAuthenticated,
-        isAdmin: authState.isAdmin,
+        isAuthenticated,
+        isAdmin,
         login,
         logout,
       }}

@@ -10,12 +10,16 @@ export interface User {
 }
 
 export interface Summit {
-  id: number;
+  ID: number;
   year: string;
   name: string;
   date: string;
-  location?: string;
+  venue: string;
+  ministers?: string;
+  clothing?: string;
+  description?: string;
 }
+
 
 export interface Payment {
   id: number;

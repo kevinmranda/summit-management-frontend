@@ -12,5 +12,6 @@ export interface RegisterResponse {
 }
 
 export interface IDCardResponse {
-  pdf_url: string;
+  id?: number; // Returned by generateIDCard
+  pdf_path: string; // Returned by generateIDCard and getIDCard
 }

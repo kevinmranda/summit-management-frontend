@@ -18,7 +18,7 @@ api.interceptors.request.use((config) => {
 });
 
 export const login = (email: string, password: string) =>
-  api.post<LoginResponse>('/api/login', { email, password });
+  api.post<LoginResponse>('/login', { email, password });
 
 export const register = (data: {
   full_name: string;
@@ -28,18 +28,35 @@ export const register = (data: {
   conference: string;
   zone: string;
   branch: string;
-}) => api.post<RegisterResponse>('/api/register', data);
+}) => api.post<RegisterResponse>('/register', data);
 
-export const getProfile = () => api.get<User>('/api/user/profile');
-export const getSummit = (year: string) => api.get<Summit>(`/api/summit/${year}`);
-export const generateIDCard = () => api.post<IDCardResponse>('/api/idcard');
-export const getUsers = () => api.get<User[]>('/api/admin/users');
+export const getProfile = () => api.get<User>('/user/profile');
+// export const getSummit = (year: string) => api.get<Summit>(`/summit/${year}`);
+export const getSummit = () => api.get<Summit>(`/summit/2026`);
+// export const generateIDCard = () => api.post<IDCardResponse>('/idcard');
+export const getUsers = () => api.get<User[]>('/admin/users');
 export const updateUser = (id: number, data: Partial<User>) =>
-  api.put(`/api/admin/users/${id}`, data);
-export const deleteUser = (id: number) => api.delete(`/api/admin/users/${id}`);
+  api.put(`/admin/users/${id}`, data);
+export const deleteUser = (id: number) => api.delete(`/admin/users/${id}`);
 export const createSummit = (data: { year: string; name: string; date: string }) =>
-  api.post('/api/admin/summit', data);
-export const getPaymentReport = () => api.get<Payment[]>('/api/admin/reports/payments');
-export const scanQRCode = (id: string) => api.get<User>(`/api/admin/qr/scan/${id}`);
+  api.post('/admin/summit', data);
+export const getPaymentReport = () => api.get<Payment[]>('/admin/reports/payments');
+export const scanQRCode = (id: string) => api.get<User>(`/admin/qr/scan/${id}`);
+
+export const generateIDCard = async (): Promise<{ data: IDCardResponse }> => {
+  const token = localStorage.getItem('token');
+  const response = await axios.post('/api/idcard', {}, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  return { data: response.data };
+};
+
+export const getIDCard = async (id: number): Promise<{ data: IDCardResponse }> => {
+  const token = localStorage.getItem('token');
+  const response = await axios.get(`/idcard/${id}`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  return { data: response.data };
+};
 
 export default api;

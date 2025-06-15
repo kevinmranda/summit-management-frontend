@@ -18,6 +18,7 @@ const Login = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setError('');
     setLoading(true);
     try {
       const response = await login(email, password);
@@ -31,13 +32,21 @@ const Login = () => {
   };
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen bg-gradient-to-br from-[#0f2027] via-[#203a43] to-[#2c5364] text-white">
       <Navbar />
-      <main className="flex-grow flex items-center justify-center bg-gray-100">
-        <div className="w-full max-w-md p-8 bg-white rounded shadow">
-          <h2 className="text-2xl font-bold mb-6 text-center">Login</h2>
-          {error && <p className="text-red-500 mb-4">{error}</p>}
-          <form onSubmit={handleSubmit}>
+      <main className="flex-grow flex items-center justify-center px-4 sm:px-6 lg:px-8">
+        <div className="w-full max-w-md bg-white/10 backdrop-blur-md rounded-2xl shadow-2xl p-8 sm:p-10 border border-white/20">
+          <h2 className="text-3xl font-bold text-white text-center mb-8">
+            Welcome Back
+          </h2>
+
+          {error && (
+            <div className="bg-red-500/10 border border-red-500 text-red-300 px-4 py-3 rounded mb-6 text-sm" role="alert">
+              <p>{error}</p>
+            </div>
+          )}
+
+          <form onSubmit={handleSubmit} className="space-y-6">
             <Input
               label="Email"
               type="email"
@@ -52,13 +61,20 @@ const Login = () => {
               onChange={(e) => setPassword(e.target.value)}
               required
             />
-            <Button type="submit" disabled={loading}>
+            <Button
+              type="submit"
+              disabled={loading}
+              className="w-full py-3 text-lg font-semibold rounded-xl bg-cyan-500 hover:bg-cyan-600 transition disabled:opacity-40"
+            >
               {loading ? <LoadingSpinner /> : 'Login'}
             </Button>
           </form>
-          <p className="mt-4 text-center">
+
+          <p className="mt-6 text-center text-white/70">
             Don't have an account?{' '}
-            <a href="/register" className="text-blue-500">Register</a>
+            <a href="/register" className="text-cyan-400 hover:underline font-medium">
+              Register here
+            </a>
           </p>
         </div>
       </main>

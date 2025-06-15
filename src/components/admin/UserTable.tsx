@@ -1,4 +1,4 @@
-import type { User } from '../../types/User';
+import type { User } from "../../types/User";
 
 interface UserTableProps {
   users: User[];
@@ -7,32 +7,35 @@ interface UserTableProps {
 }
 
 const UserTable = ({ users, onEdit, onDelete }: UserTableProps) => (
-  <div className="overflow-x-auto">
-    <table className="min-w-full bg-white border">
-      <thead>
+  <div className="overflow-x-auto rounded-lg shadow-md border border-gray-200">
+    <table className="min-w-full bg-white divide-y divide-gray-200">
+      <thead className="bg-gray-50 text-gray-700 uppercase text-sm">
         <tr>
-          <th className="p-2 border">ID</th>
-          <th className="p-2 border">Name</th>
-          <th className="p-2 border">Email</th>
-          <th className="p-2 border">Actions</th>
+          <th className="px-4 py-3 text-left">ID</th>
+          <th className="px-4 py-3 text-left">Name</th>
+          <th className="px-4 py-3 text-left">Email</th>
+          <th className="px-4 py-3 text-left">Actions</th>
         </tr>
       </thead>
-      <tbody>
+      <tbody className="divide-y divide-gray-100">
         {users.map((user) => (
-          <tr key={user.id}>
-            <td className="p-2 border">{user.id}</td>
-            <td className="p-2 border">{user.full_name}</td>
-            <td className="p-2 border">{user.email}</td>
-            <td className="p-2 border">
+          <tr
+            key={user.id}
+            className="hover:bg-gray-50 transition-colors duration-200"
+          >
+            <td className="px-4 py-3">{user.id}</td>
+            <td className="px-4 py-3">{user.full_name}</td>
+            <td className="px-4 py-3">{user.email}</td>
+            <td className="px-4 py-3 whitespace-nowrap">
               <button
                 onClick={() => onEdit(user)}
-                className="text-blue-500 mr-2"
+                className="text-blue-600 hover:text-blue-800 mr-4 font-semibold"
               >
                 Edit
               </button>
               <button
                 onClick={() => onDelete(user.id)}
-                className="text-red-500"
+                className="text-red-600 hover:text-red-800 font-semibold"
               >
                 Delete
               </button>
