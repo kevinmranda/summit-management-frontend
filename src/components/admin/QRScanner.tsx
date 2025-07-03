@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { QrReader } from "react-qr-reader";
+import { useEffect, useRef, useState } from "react";
+import { Html5Qrcode } from "html5-qrcode";
 
 interface QRScannerProps {
   onScan: (data: string) => void;
@@ -8,45 +8,65 @@ interface QRScannerProps {
 const QRScanner = ({ onScan }: QRScannerProps) => {
   const [error, setError] = useState("");
   const [scanned, setScanned] = useState(false);
+  const scannerRef = useRef<Html5Qrcode | null>(null);
+  const scannerId = "html5-qrcode-reader";
 
-  const handleScan = (data: string | null) => {
-    if (data && !scanned) {
-      setScanned(true);
-      onScan(data);
-      // Reset scanner after 2 seconds to allow new scan
-      setTimeout(() => setScanned(false), 2000);
-    }
-  };
+  useEffect(() => {
+    const scanner = new Html5Qrcode(scannerId);
+    scannerRef.current = scanner;
 
-  const handleError = (err: any) => {
-    // Show error only if it's a camera permission or device issue
-    if (
-      err?.name === "NotAllowedError" ||
-      err?.name === "NotFoundError" ||
-      err?.message?.toLowerCase().includes("permission") ||
-      err?.message?.toLowerCase().includes("camera")
-    ) {
-      setError("🚫 Failed to access camera. Please check your permissions.");
-      console.error(err);
-    }
-    // Otherwise, ignore frame decoding errors (non-fatal)
-  };
+    Html5Qrcode.getCameras()
+      .then((devices) => {
+        if (devices.length > 0) {
+          const cameraId = devices[0].id;
+          scanner
+            .start(
+              cameraId,
+              {
+                fps: 10,
+                qrbox: { width: 250, height: 250 },
+              },
+              (decodedText) => {
+                if (!scanned) {
+                  setScanned(true);
+                  onScan(decodedText);
+                  setTimeout(() => setScanned(false), 2000);
+                }
+              },
+              (err) => {
+                // Frame decode errors are expected; no need to show them
+              }
+            )
+            .catch((err) => {
+              setError(
+                "🚫 Failed to start camera. Please allow camera access or check permissions."
+              );
+              console.error(err);
+            });
+        } else {
+          setError("🚫 No cameras found on this device.");
+        }
+      })
+      .catch((err) => {
+        setError("🚫 Unable to access camera. Check your device permissions.");
+        console.error(err);
+      });
+
+    return () => {
+      scanner.stop().then(() => scanner.clear()).catch(() => {});
+    };
+  }, [onScan, scanned]);
 
   return (
     <div className="bg-white text-blue-950 p-6 rounded-2xl shadow-lg max-w-2xl mx-auto">
       <h2 className="text-2xl font-bold mb-4 border-b pb-2">📷 Scan QR Code</h2>
       {error && <p className="text-red-500 mb-4">{error}</p>}
 
-      <div className="rounded-lg overflow-hidden border border-gray-300 shadow-sm">
-        <QrReader
-          constraints={{ facingMode: "environment" }}
-          onResult={(result, err) => {
-            if (result) handleScan(result.getText());
-            if (err) handleError(err);
-          }}
-          containerStyle={{ width: "100%" }}
-        />
-      </div>
+      <div
+        id={scannerId}
+        className="rounded-lg overflow-hidden border border-gray-300 shadow-sm"
+        style={{ width: "100%" }}
+      ></div>
     </div>
   );
 };

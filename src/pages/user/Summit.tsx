@@ -32,11 +32,11 @@ const SummitPage = () => {
   };
 
   return (
-    <div className="flex flex-col min-h-screen bg-gradient-to-tr from-blue-600 via-purple-700 to-pink-600 text-white">
+    <div className="flex flex-col min-h-screen bg-gradient-to-br from-primary-50 to-secondary-100">
       <Navbar />
       <main className="flex-grow flex justify-center items-start pt-10 pb-16 px-4 sm:px-6 lg:px-8">
-        <div className="bg-white rounded-3xl shadow-2xl max-w-4xl w-full p-10 text-gray-900 border border-purple-300 animate-fade-in">
-          <h1 className="text-4xl font-extrabold mb-8 text-center text-purple-900">
+        <div className="bg-white rounded-3xl shadow-strong max-w-4xl w-full p-10 text-secondary-900 border border-secondary-200 animate-scale-in">
+          <h1 className="text-4xl font-bold mb-8 text-center text-secondary-900">
             Summit {year} Details
           </h1>
 
@@ -47,9 +47,9 @@ const SummitPage = () => {
           )}
 
           {error && (
-            <p className="text-red-600 font-semibold text-center mb-6">
+            <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-xl mb-6 text-center animate-slide-up">
               {error}
-            </p>
+            </div>
           )}
 
           {summit && (

@@ -10,18 +10,10 @@ const Summits = () => {
   const { loading, error, execute } = useApi(createSummit);
   const [success, setSuccess] = useState("");
 
-  const handleSubmit = async (data: {
-    year: string;
-    name: string;
-    date: string;
-    venue: string;
-    ministers?: string;
-    clothing?: string;
-    description?: string;
-  }) => {
+  const handleSubmit = async (formData: FormData) => {
     try {
-      await execute(data);
-      setSuccess("Summit created successfully");
+      await execute(formData);
+      setSuccess("Summit created successfully with all media uploaded!");
     } catch (err) {
       setSuccess("");
     }

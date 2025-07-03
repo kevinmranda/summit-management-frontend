@@ -16,6 +16,7 @@ import Summits from "../pages/admin/Summits.tsx";
 import Reports from "../pages/admin/Reports.tsx";
 import QRScan from "../pages/admin/QRScan.tsx";
 import NotFound from "../pages/NotFound.tsx";
+import MealScan from "../components/admin/MealScan.tsx";
 
 // Protected Route wrapper
 const ProtectedRoute = ({
@@ -117,6 +118,7 @@ const AppRoutes = () => (
         </ProtectedRoute>
       }
     />
+    <Route path="/meals/scan" element={<MealScan />} />
 
     {/* Fallback */}
     <Route path="*" element={<NotFound />} />

@@ -5,7 +5,7 @@ import { jwtDecode } from 'jwt-decode';
 interface DecodedToken {
   exp: number;
   role: string;
-  user_id: number;
+  user_id: number; // Backend uses user_id in JWT
 }
 
 interface AuthContextType {

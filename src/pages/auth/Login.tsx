@@ -32,16 +32,16 @@ const Login = () => {
   };
 
   return (
-    <div className="flex flex-col min-h-screen bg-gradient-to-br from-[#0f2027] via-[#203a43] to-[#2c5364] text-white">
+    <div className="flex flex-col min-h-screen bg-gradient-to-br from-primary-50 to-secondary-100">
       <Navbar />
       <main className="flex-grow flex items-center justify-center px-4 sm:px-6 lg:px-8">
-        <div className="w-full max-w-md bg-white/10 backdrop-blur-md rounded-2xl shadow-2xl p-8 sm:p-10 border border-white/20">
-          <h2 className="text-3xl font-bold text-white text-center mb-8">
+        <div className="w-full max-w-md bg-white rounded-2xl shadow-strong p-8 sm:p-10 border border-secondary-200 animate-scale-in">
+          <h2 className="text-3xl font-bold text-secondary-900 text-center mb-8">
             Welcome Back
           </h2>
 
           {error && (
-            <div className="bg-red-500/10 border border-red-500 text-red-300 px-4 py-3 rounded mb-6 text-sm" role="alert">
+            <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-xl mb-6 text-sm animate-slide-up" role="alert">
               <p>{error}</p>
             </div>
           )}
@@ -64,15 +64,23 @@ const Login = () => {
             <Button
               type="submit"
               disabled={loading}
-              className="w-full py-3 text-lg font-semibold rounded-xl bg-cyan-500 hover:bg-cyan-600 transition disabled:opacity-40"
+              size="lg"
+              className="w-full"
             >
-              {loading ? <LoadingSpinner /> : 'Login'}
+              {loading ? (
+                <div className="flex items-center gap-2">
+                  <LoadingSpinner size="sm" color="white" />
+                  <span>Signing in...</span>
+                </div>
+              ) : (
+                'Sign In'
+              )}
             </Button>
           </form>
 
-          <p className="mt-6 text-center text-white/70">
+          <p className="mt-6 text-center text-secondary-600">
             Don't have an account?{' '}
-            <a href="/register" className="text-cyan-400 hover:underline font-medium">
+            <a href="/register" className="text-primary-600 hover:text-primary-700 font-medium transition-colors">
               Register here
             </a>
           </p>

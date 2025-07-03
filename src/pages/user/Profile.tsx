@@ -15,11 +15,11 @@ const Profile = () => {
   }, [execute]);
 
   return (
-    <div className="flex flex-col min-h-screen bg-gradient-to-br from-indigo-600 via-purple-600 to-indigo-800 text-white">
+    <div className="flex flex-col min-h-screen bg-gradient-to-br from-primary-50 to-secondary-100">
       <Navbar />
       <main className="flex-grow flex flex-col items-center justify-center p-6">
-        <div className="bg-white rounded-3xl shadow-2xl max-w-3xl w-full p-8 text-gray-900 border border-indigo-300 animate-fade-in">
-          <h1 className="text-4xl font-extrabold mb-8 text-center text-indigo-900">
+        <div className="bg-white rounded-3xl shadow-strong max-w-3xl w-full p-8 text-secondary-900 border border-secondary-200 animate-scale-in">
+          <h1 className="text-4xl font-bold mb-8 text-center text-secondary-900">
             👤 Your Profile
           </h1>
 

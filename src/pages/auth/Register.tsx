@@ -45,16 +45,16 @@ const Register = () => {
   };
 
   return (
-    <div className="flex flex-col min-h-screen bg-gradient-to-br from-[#141e30] to-[#243b55] text-white">
+    <div className="flex flex-col min-h-screen bg-gradient-to-br from-primary-50 to-secondary-100">
       <Navbar />
-      <main className="flex-grow flex items-center justify-center px-4">
-        <div className="w-full max-w-md bg-white/10 backdrop-blur-md rounded-2xl shadow-2xl p-8 border border-white/20">
-          <h2 className="text-2xl font-bold text-center mb-6">
-            {step === 1 ? 'Basic Info' : 'TUCASA Info'}
+      <main className="flex-grow flex items-center justify-center px-4 py-8">
+        <div className="w-full max-w-md bg-white rounded-2xl shadow-strong p-8 border border-secondary-200 animate-scale-in">
+          <h2 className="text-2xl font-bold text-center mb-6 text-secondary-900">
+            {step === 1 ? 'Basic Information' : 'TUCASA Information'}
           </h2>
 
           {error && (
-            <div className="bg-red-500/10 border border-red-500 text-red-300 px-4 py-2 rounded mb-4 text-sm">
+            <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-xl mb-6 text-sm animate-slide-up">
               {error}
             </div>
           )}
@@ -84,9 +84,9 @@ const Register = () => {
                 onChange={handleChange}
                 required
               />
-              <div className="mt-6 flex justify-end">
-                <Button type="button" onClick={nextStep}>
-                  Next
+              <div className="mt-6">
+                <Button type="button" onClick={nextStep} size="lg" className="w-full">
+                  Continue
                 </Button>
               </div>
             </>
@@ -122,12 +122,19 @@ const Register = () => {
                 onChange={handleChange}
                 required
               />
-              <div className="mt-6 flex justify-between">
-                <Button type="button" onClick={prevStep} className="bg-gray-600 hover:bg-gray-700">
+              <div className="mt-6 flex gap-4">
+                <Button type="button" onClick={prevStep} variant="outline" size="lg" className="flex-1">
                   Back
                 </Button>
-                <Button type="submit" disabled={loading}>
-                  {loading ? <LoadingSpinner /> : 'Register'}
+                <Button type="submit" disabled={loading} size="lg" className="flex-1">
+                  {loading ? (
+                    <div className="flex items-center gap-2">
+                      <LoadingSpinner size="sm" color="white" />
+                      <span>Creating...</span>
+                    </div>
+                  ) : (
+                    'Create Account'
+                  )}
                 </Button>
               </div>
             </form>

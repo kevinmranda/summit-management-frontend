@@ -29,45 +29,50 @@ const Home = () => {
   }, []);
 
   return (
-    <div className="flex flex-col min-h-screen bg-gradient-to-br from-[#141e30] to-[#243b55] text-white">
+    <div className="flex flex-col min-h-screen bg-gradient-to-br from-primary-50 to-secondary-100">
       <Navbar />
 
       {/* Hero Section */}
       <main className="flex-grow">
         <section className="flex flex-col md:flex-row items-center justify-between px-6 py-20 max-w-7xl mx-auto gap-12">
           {/* Text */}
-          <div className="flex-1 text-center md:text-left">
-            <h1 className="text-5xl md:text-6xl font-extrabold leading-tight mb-6 drop-shadow-lg">
+          <div className="flex-1 text-center md:text-left animate-fade-in">
+            <h1 className="text-5xl md:text-6xl font-bold leading-tight mb-6 text-secondary-900">
               Welcome to <br className="hidden md:block" />
-              <span className="text-emerald-400">Summit Management</span>
+              <span className="text-primary-600 bg-gradient-to-r from-primary-600 to-primary-700 bg-clip-text text-transparent">
+                Summit Management
+              </span>
             </h1>
-            <p className="text-lg md:text-xl text-white/80 mb-8 max-w-md">
+            <p className="text-lg md:text-xl text-secondary-600 mb-8 max-w-md leading-relaxed">
               Be part of our annual TUCASA summit and connect with peers, grow
               spiritually, and be transformed!
             </p>
             <Link to="/register">
-              <Button className="bg-emerald-500 hover:bg-emerald-600 px-6 py-3 text-lg transition-all duration-300 rounded-xl shadow-lg">
+              <Button size="lg" className="shadow-medium">
                 Register Now
               </Button>
             </Link>
           </div>
 
           {/* Hero Image */}
-          <div className="flex-1">
-            <img
-              src="https://images.pexels.com/photos/5592489/pexels-photo-5592489.jpeg"
-              alt="Summit"
-              className="w-full max-w-md mx-auto drop-shadow-xl"
-            />
+          <div className="flex-1 flex justify-center animate-slide-up">
+            <div className="relative">
+              <div className="absolute inset-0 bg-gradient-to-r from-primary-400 to-accent-400 rounded-3xl blur-2xl opacity-20 animate-pulse"></div>
+              <img
+                src="https://images.pexels.com/photos/5592489/pexels-photo-5592489.jpeg"
+                alt="Summit"
+                className="relative z-10 w-full max-w-lg rounded-3xl shadow-strong border border-secondary-200"
+              />
+            </div>
           </div>
         </section>
 
         {/* Countdown Section */}
-        <section className="py-16 text-center bg-white/5 border-t border-white/10">
-          <h2 className="text-3xl font-bold text-emerald-300 mb-6">
+        <section className="py-16 text-center bg-white/80 backdrop-blur-sm border-t border-secondary-200">
+          <h2 className="text-3xl font-bold text-primary-700 mb-6">
             Countdown to the Summit
           </h2>
-          <div className="flex justify-center gap-6 text-white text-2xl font-bold">
+          <div className="flex justify-center gap-6 text-secondary-800 text-2xl font-bold">
             {["days", "hours", "minutes", "seconds"].map((unit) => (
               <div
                 key={unit}
@@ -85,7 +90,7 @@ const Home = () => {
         </section>
 
         {/* Highlights Section */}
-        <section className="bg-white/10 backdrop-blur-md py-16 border-t border-white/10">
+        <section className="bg-white py-16 border-t border-secondary-200">
           <div className="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 px-6">
             {[
               {
@@ -106,13 +111,13 @@ const Home = () => {
             ].map(({ title, desc, icon }, index) => (
               <div
                 key={index}
-                className="bg-white/10 border border-white/20 p-6 rounded-2xl shadow-xl text-center"
+                className="bg-white border border-secondary-200 p-8 rounded-2xl shadow-medium text-center hover:shadow-strong transition-all duration-300 hover:-translate-y-1"
               >
-                <div className="text-4xl mb-4">{icon}</div>
-                <h3 className="text-xl font-bold mb-2 text-emerald-300">
+                <div className="text-5xl mb-6">{icon}</div>
+                <h3 className="text-xl font-bold mb-3 text-secondary-900">
                   {title}
                 </h3>
-                <p className="text-white/80 text-sm">{desc}</p>
+                <p className="text-secondary-600 text-sm leading-relaxed">{desc}</p>
               </div>
             ))}
           </div>

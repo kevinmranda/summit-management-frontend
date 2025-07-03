@@ -1,8 +1,8 @@
 import { jwtDecode } from 'jwt-decode';
 
 interface DecodedToken {
-  id: number;
-  is_admin: boolean;
+  user_id: number;      // Backend uses 'user_id' in JWT
+  role: string;         // Backend includes role
   exp: number;
 }
 
@@ -17,9 +17,7 @@ export const isAuthenticated = () => {
   if (!token) return false;
   try {
     const decoded: DecodedToken = jwtDecode(token);
-        console.log(decoded)
-
-    return decoded.exp * 1000 > Date.now();
+    return decoded.exp * 1000 > Date.now(); // Not expired
   } catch {
     return false;
   }
@@ -30,8 +28,20 @@ export const isAdmin = () => {
   if (!token) return false;
   try {
     const decoded: DecodedToken = jwtDecode(token);
-    return decoded.is_admin;
+    return decoded.role === 'admin';
   } catch {
     return false;
+  }
+};
+
+// Get user ID from token using 'user_id' (backend JWT field)
+export const getUserIdFromToken = (): number | null => {
+  const token = getToken();
+  if (!token) return null;
+  try {
+    const decoded: DecodedToken = jwtDecode(token);
+    return decoded.user_id || null;
+  } catch {
+    return null;
   }
 };

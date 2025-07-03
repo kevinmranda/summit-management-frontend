@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import { initiatePayment, getPaymentProviders } from "../../services/api";
 import { FaTimes } from "react-icons/fa";
+import axios from "axios";
 
 interface Provider {
   name: string;
@@ -24,7 +25,7 @@ const Payment: React.FC<PaymentProps> = ({ summitId, onClose }) => {
     const fetchProviders = async () => {
       try {
         const response = await axios.get(
-          "http://172.20.10.3:8080/payments/providers"
+          "http://192.168.0.233:8080/payments/providers"
         );
         if (Array.isArray(response.data)) {
           setProviders(response.data);
@@ -53,18 +54,12 @@ const Payment: React.FC<PaymentProps> = ({ summitId, onClose }) => {
     setError("");
 
     try {
-      const response = await axios.post(
-        "http://172.20.10.3:8080/payments/initiate",
-        {
-          summit_id: Number(summitId),
-          amount: parseFloat(amount),
-          msisdn,
-          provider: selectedProvider,
-        },
-        {
-          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-        }
-      );
+      const response = await initiatePayment({
+        summit_id: Number(summitId),
+        amount: parseFloat(amount),
+        msisdn,
+        provider: selectedProvider,
+      });
 
       if (response.data.success) {
         // Redirect or do whatever
@@ -79,22 +74,22 @@ const Payment: React.FC<PaymentProps> = ({ summitId, onClose }) => {
   };
 
   return (
-    <div className="min-h-screen fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-      <div className="bg-white/20 backdrop-blur-md border border-white/30 rounded-2xl shadow-lg p-6 w-full max-w-md text-blue-950 animate-fade-in">
+    <div className="min-h-screen fixed inset-0 z-50 flex items-center justify-center bg-black/50 animate-fade-in">
+      <div className="bg-white border border-secondary-200 rounded-2xl shadow-strong p-8 w-full max-w-md text-secondary-900 animate-scale-in">
         <button
-          onClick={onClose} // <-- call onClose prop instead of reload
-          className="absolute top-3 right-4 text-white hover:text-red-400 text-lg"
+          onClick={onClose}
+          className="absolute top-4 right-4 text-secondary-500 hover:text-secondary-700 transition-colors"
           aria-label="Close payment modal"
         >
           <FaTimes />
         </button>
 
-        <h2 className="text-2xl font-bold text-center mb-6 text-white">
+        <h2 className="text-2xl font-bold text-center mb-6 text-secondary-900">
           💳 Pay for Summit
         </h2>
 
         {error && (
-          <div className="bg-red-100 text-red-700 px-4 py-2 rounded mb-4 text-sm text-center font-medium shadow">
+          <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-xl mb-6 text-sm text-center font-medium animate-slide-up">
             {error}
           </div>
         )}

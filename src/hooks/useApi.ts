@@ -8,13 +8,19 @@ export const useApi = <T>(apiCall: (...args: any[]) => Promise<{ data: T }>) => 
   const execute = useCallback(async (...args: any[]): Promise<T> => {
     setLoading(true);
     setError(null);
+
     try {
       const response = await apiCall(...args);
       setData(response.data);
       return response.data;
     } catch (err: any) {
-      const message = err.response?.data?.message || 'An error occurred';
-      setError(message);
+      const message =
+        err?.response?.data?.message ||
+        err?.response?.data ||
+        err?.message ||
+        'An unknown error occurred';
+
+      setError(typeof message === 'string' ? message : JSON.stringify(message));
       throw err;
     } finally {
       setLoading(false);
